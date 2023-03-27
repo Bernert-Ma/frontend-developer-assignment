@@ -7,6 +7,7 @@ import { DispatchTypeEnum } from '../types/dispatch.type';
 import { getAvailableRecipient } from './helpers';
 import { LayoutContext } from './hooks/useLayoutContext';
 import { ILayoutContextProps } from '../models/layoutContext.model';
+import AvailableRecipient from './AvailableRecipient';
 
 const Layout: FC = (): ReactElement => {
   const [state, dispatch] = useReducer<Reducer<IInitialState, IAction>>(
@@ -34,6 +35,7 @@ const Layout: FC = (): ReactElement => {
   return (
     <LayoutContext.Provider value={ctx}>
       <React.Suspense fallback={<div>Loading...</div>}>
+        <AvailableRecipient />
       </React.Suspense>
     </LayoutContext.Provider>
     );
