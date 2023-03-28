@@ -15,6 +15,13 @@ function reducer(state: IInitialState, action: IAction) {
 			};
 		}
 
+		case DispatchTypeEnum.CHANGE_EMAIL_SELECTION: {
+			return {
+				...state,
+				availableRecipients: action.payload.data as IAvailableRecipient[],
+			};
+		}
+
 		case DispatchTypeEnum.ADD_RECIPIENT: {
 			return {
 				...state,
