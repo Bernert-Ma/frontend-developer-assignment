@@ -1,5 +1,10 @@
-export interface IDomainData {
+export interface ISelectedEmail {
   id: number;
+  email: string;
+}
+
+export interface IDomainData {
+  id?: number;
   email: string;
   isSelected: boolean;
 }

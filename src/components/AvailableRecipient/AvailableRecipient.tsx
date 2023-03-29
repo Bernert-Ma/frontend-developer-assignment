@@ -7,14 +7,19 @@ import {
   AccordionIcon,
   Box,
   Checkbox,
-  Stack
+  Stack,
+  IconButton,
 } from '@chakra-ui/react';
+import { DeleteIcon } from '@chakra-ui/icons';
 import { useLayoutContext } from '../hooks/useLayoutContext';
 import { IAvailableRecipient, IDomainData } from '../../models/recipients.model';
 import { DispatchTypeEnum } from '../../types/dispatch.type';
+import CSAutocomplete from '../CSAutocomplete';
+import { AlertTypeEnum } from '../../types/alert.type';
+import { onRemoveDomain, onRemoveEmail } from './helpers';
 
 const AvailableRecipient: FC = (): ReactElement => {
-  const { data, onDispatch } = useLayoutContext();
+  const { data, onDispatch, onEnableAlertDialog, onEnableToast } = useLayoutContext();
 
   const handleChange = (checked: boolean, selectedItem: IDomainData) => {
     const recipientObj: IAvailableRecipient = data.availableRecipients.find(recipient => recipient.data.some(item => item.id === selectedItem.id));
@@ -29,24 +34,68 @@ const AvailableRecipient: FC = (): ReactElement => {
     });
   };
 
+  const handleDeleteRecipient = (id: number, isSingleItem: boolean) => {
+    let updatedRecipients: IAvailableRecipient[] = [];
+    isSingleItem ?
+      updatedRecipients = onRemoveEmail(data.availableRecipients, id) :
+      updatedRecipients = onRemoveDomain(data.availableRecipients, id);
+
+    onDispatch({
+      type: DispatchTypeEnum.REMOVE_RECIPIENT,
+      payload: {
+        data: updatedRecipients,
+      },
+    });
+  };
+
   return (
     <Box boxShadow='lg' p='6' rounded='md' bg='white'>
       <h1 style={{ paddingBottom: 16 }}>
         Available Recipients
       </h1>
+      <CSAutocomplete />
       <Box boxShadow='xs' p='6' rounded='md' minWidth={400}>
         {data.availableRecipients.map((recipient) => {
           if (recipient.data.length === 1) {
             const { email, isSelected, id } = recipient.data[0];
-
             return (
-              <div key={id} style={{ padding: '8px 19px' }}>
+              <div
+                key={id}
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  padding: '8px 0px 8px 19px'
+                }}
+              >
                 <Checkbox
                   isChecked={isSelected}
                   onChange={(e) => handleChange(e.target.checked, recipient.data[0])}
                 >
                   {email}
                 </Checkbox>
+                <IconButton
+                  variant='ghost'
+                  colorScheme='blue'
+                  aria-label={`Delete ${email}`}
+                  size='sm'
+                  ml='2px'
+                  icon={<DeleteIcon />}
+                  onClick={() => onEnableAlertDialog({
+                    headerText: 'Delete Email',
+                    bodyText: `Are you sure you want to delete ${email}?`,
+                    dismissButtonText: 'Cancel',
+                    confirmButtonText: 'Delete',
+                    dialogResponse: (val: boolean) => {
+                      if (val) {
+                        handleDeleteRecipient(id, true);
+                        onEnableToast({
+                          message: 'Email has been deleted',
+                          alterStatus: AlertTypeEnum.ERROR,
+                        });
+                      }
+                    },
+                  })}
+                />
               </div>
             );
           }
@@ -54,7 +103,7 @@ const AvailableRecipient: FC = (): ReactElement => {
           return (
             <Accordion key={recipient.id} defaultIndex={[0]} allowToggle>
               <AccordionItem key={recipient.id} border='none'>
-                <h2 style={{ display: 'flex', paddingLeft: '19px' }}>
+                <h2 style={{ display: 'flex', alignItems: 'center', paddingLeft: '19px' }}>
                   <Checkbox
                     isChecked={recipient.data.every((item) => item.isSelected)}
                     isIndeterminate={recipient.data.some((item) => item.isSelected) && !recipient.data.every((item) => item.isSelected)}
@@ -66,16 +115,70 @@ const AvailableRecipient: FC = (): ReactElement => {
                       {recipient.domain}
                     </Box>
                   </AccordionButton>
+                  <IconButton
+                    variant='ghost'
+                    colorScheme='blue'
+                    aria-label={`Delete ${recipient.domain}`}
+                    size='sm'
+                    ml='2px'
+                    icon={<DeleteIcon />}
+                    onClick={() => onEnableAlertDialog({
+                      headerText: 'Delete Domain',
+                      bodyText: `Are you sure you want to delete the domain ${recipient.domain}?`,
+                      dismissButtonText: 'Cancel',
+                      confirmButtonText: 'Delete',
+                      dialogResponse: (val: boolean) => {
+                        if (val) {
+                          handleDeleteRecipient(recipient.id, false);
+                          onEnableToast({
+                            message: 'Doamin has been deleted',
+                            alterStatus: AlertTypeEnum.ERROR,
+                          });
+                        }
+                      },
+                    })}
+                  />
                 </h2>
-                <AccordionPanel pb={4}>
+                <AccordionPanel pb={4} pr={0}>
                   {recipient.data.map((item) => (
                     <Stack key={item.id} pl={6} mt={1} spacing={1}>
-                      <Checkbox
-                        isChecked={item.isSelected}
-                        onChange={(e) => handleChange(e.target.checked, item)}
+                      <div
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                        }}
                       >
-                        {item.email}
-                      </Checkbox>
+                        <Checkbox
+                          isChecked={item.isSelected}
+                          onChange={(e) => handleChange(e.target.checked, item)}
+                        >
+                          {item.email}
+                        </Checkbox>
+                        <IconButton
+                          variant='ghost'
+                          colorScheme='blue'
+                          aria-label={`Delete ${item.email}`}
+                          size='sm'
+                          ml='2px'
+                          icon={<DeleteIcon />}
+                          onClick={() => onEnableAlertDialog({
+                            headerText: 'Delete Email',
+                            bodyText: `Are you sure you want to delete ${item.email}?`,
+                            dismissButtonText: 'Cancel',
+                            confirmButtonText: 'Delete',
+                            dialogResponse: (val: boolean) => {
+                              if (val) {
+                                handleDeleteRecipient(item.id, true);
+                                onEnableToast({
+                                  message: 'Email has been deleted',
+                                  alterStatus: AlertTypeEnum.ERROR,
+                                });
+                              }
+                            },
+                          })}
+                        />
+                      </div>
                     </Stack>
                   ))}
                 </AccordionPanel>

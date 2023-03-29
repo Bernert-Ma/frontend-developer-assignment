@@ -8,12 +8,12 @@ import {
   Box,
 } from '@chakra-ui/react';
 import { useLayoutContext } from '../hooks/useLayoutContext';
-import { IAvailableRecipient } from '../../models/recipients.model';
+import { IAvailableRecipient, ISelectedEmail } from '../../models/recipients.model';
 
 const SelectedRecipient: FC = (): ReactElement => {
   const { data } = useLayoutContext();
   const [selectedCompanies, setSelectedCompanies] = useState<IAvailableRecipient[]>([]);
-  const [selectedEmails, setSelectedEmails] = useState<{ id: number; email: string }[]>([]);
+  const [selectedEmails, setSelectedEmails] = useState<ISelectedEmail[]>([]);
 
   useEffect(() => {
     const companies = data.availableRecipients.map((recipient) => ({
