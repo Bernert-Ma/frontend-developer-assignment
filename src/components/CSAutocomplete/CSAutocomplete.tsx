@@ -4,22 +4,15 @@ import { CreatableSelect } from 'chakra-react-select';
 import { useLayoutContext } from '../hooks/useLayoutContext';
 import { DispatchTypeEnum } from '../../types/dispatch.type';
 import { AlertTypeEnum } from '../../types/alert.type';
-
-interface Option {
-  value: string;
-  label: string;
-}
-
-interface GroupedOption {
-  label: string;
-  options: Option[];
-}
+import { onCreateNewOption, onCreateOption } from './helpers';
+import { IGroupedOption, IOption } from '../../models/autocomplete.model';
+import { IAvailableRecipient } from '../../models/recipients.model';
 
 const CSAutocomplete: FC = (): ReactElement => {
   const { data, onDispatch, onEnableToast } = useLayoutContext();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [options, setOptions] = useState<GroupedOption[]>([]);
-  const [value, setValue] = useState<Option | null>();
+  const [options, setOptions] = useState<IGroupedOption[]>([]);
+  const [value, setValue] = useState<IOption | null>();
   const [isInvalid, setIsInvalid] = useState<boolean>(false);
 
   // TODO:
@@ -43,61 +36,28 @@ const CSAutocomplete: FC = (): ReactElement => {
     }
   }, [options]);
 
-  const createOption = (label: string) => ({
-    label,
-    value: new Date().getTime().toString(),
-  });
-
   const handleCreate = (inputValue: string) => {
-    const newOption = createOption(inputValue);
+    const newOption: IOption = onCreateNewOption(inputValue);
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     setValue(newOption);
     if (!emailRegex.test(inputValue)) {
       setIsInvalid(true);
       return;
     };
-    const domain = inputValue.split('@')[1];
-    const domainIndex = data.availableRecipients.findIndex((item) => item.domain === domain);
-    if (domainIndex > -1) {
-      data.availableRecipients[domainIndex].data.push({
-        id: parseInt(newOption.value),
-        email: newOption.label,
-        isSelected: false,
-      });
-      onDispatch({
-        type: DispatchTypeEnum.ADD_RECIPIENT,
-        payload: {
-          data: data.availableRecipients.sort((a, b) => b.data.length - a.data.length),
-        },
-      });
-      onEnableToast({
-        message: 'Email has been successfully created',
-        alterStatus: AlertTypeEnum.SUCCESS
-      });
-    } else {
-      data.availableRecipients.push({
-        id: new Date().getTime(),
-        domain,
-        data: [{
-          id: parseInt(newOption.value),
-          email: newOption.label,
-          isSelected: false,
-        }],
-      });
-      onDispatch({
-        type: DispatchTypeEnum.ADD_RECIPIENT,
-        payload: {
-          data: data.availableRecipients.sort((a, b) => b.data.length - a.data.length),
-        },
-      });
-      onEnableToast({
-        message: 'Email has been successfully created',
-        alterStatus: AlertTypeEnum.SUCCESS
-      });
-    }
+    const updatedRecipients: IAvailableRecipient[] = onCreateOption(inputValue, newOption, data.availableRecipients);
+    onDispatch({
+      type: DispatchTypeEnum.ADD_RECIPIENT,
+      payload: {
+        data: updatedRecipients.sort((a, b) => b.data.length - a.data.length),
+      },
+    });
+    onEnableToast({
+      message: 'Email has been successfully created',
+      alterStatus: AlertTypeEnum.SUCCESS
+    });
   };
 
-  const handleChange = (newValue: Option | null) => {
+  const handleChange = (newValue: IOption | null) => {
     setIsInvalid(false);
     setValue(newValue);
   };
