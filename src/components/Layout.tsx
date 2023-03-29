@@ -30,7 +30,6 @@ const Layout: FC = (): ReactElement => {
   );
   const [openAlertDialog, setOpenAlertDialog] = useState<boolean>(false);
   const [alertDialogContent, setAlertDialogContent] = useState<IAlertDialogContent>();
-
   const toast = useToast();
 
   useEffect(() => {

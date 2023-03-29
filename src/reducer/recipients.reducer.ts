@@ -32,6 +32,7 @@ function reducer(state: IInitialState, action: IAction) {
 		case DispatchTypeEnum.REMOVE_RECIPIENT: {
 			return {
 				...state,
+				availableRecipients: action.payload.data.sort((a, b) => b.data.length - a.data.length) as IAvailableRecipient[],
 			}
 		}
 

@@ -16,6 +16,7 @@ import { IAvailableRecipient, IDomainData } from '../../models/recipients.model'
 import { DispatchTypeEnum } from '../../types/dispatch.type';
 import CSAutocomplete from '../CSAutocomplete';
 import { AlertTypeEnum } from '../../types/alert.type';
+import { onRemoveDomain, onRemoveEmail } from './helpers';
 
 const AvailableRecipient: FC = (): ReactElement => {
   const { data, onDispatch, onEnableAlertDialog, onEnableToast } = useLayoutContext();
@@ -30,6 +31,20 @@ const AvailableRecipient: FC = (): ReactElement => {
       payload: {
         data: data.availableRecipients
       }
+    });
+  };
+
+  const handleDeleteRecipient = (id: number, isSingleItem: boolean) => {
+    let updatedRecipients: IAvailableRecipient[] = [];
+    isSingleItem ?
+      updatedRecipients = onRemoveEmail(data.availableRecipients, id) :
+      updatedRecipients = onRemoveDomain(data.availableRecipients, id);
+
+    onDispatch({
+      type: DispatchTypeEnum.REMOVE_RECIPIENT,
+      payload: {
+        data: updatedRecipients,
+      },
     });
   };
 
@@ -72,7 +87,7 @@ const AvailableRecipient: FC = (): ReactElement => {
                     confirmButtonText: 'Delete',
                     dialogResponse: (val: boolean) => {
                       if (val) {
-                        // debugger;
+                        handleDeleteRecipient(id, true);
                         onEnableToast({
                           message: 'Email has been deleted',
                           alterStatus: AlertTypeEnum.ERROR,
@@ -114,7 +129,7 @@ const AvailableRecipient: FC = (): ReactElement => {
                       confirmButtonText: 'Delete',
                       dialogResponse: (val: boolean) => {
                         if (val) {
-                          // debugger;
+                          handleDeleteRecipient(recipient.id, false);
                           onEnableToast({
                             message: 'Doamin has been deleted',
                             alterStatus: AlertTypeEnum.ERROR,
@@ -154,7 +169,7 @@ const AvailableRecipient: FC = (): ReactElement => {
                             confirmButtonText: 'Delete',
                             dialogResponse: (val: boolean) => {
                               if (val) {
-                                // debugger;
+                                handleDeleteRecipient(item.id, true);
                                 onEnableToast({
                                   message: 'Email has been deleted',
                                   alterStatus: AlertTypeEnum.ERROR,

@@ -23,7 +23,6 @@ const CSAutocomplete: FC = (): ReactElement => {
   const [isInvalid, setIsInvalid] = useState<boolean>(false);
 
   // TODO:
-  // Create delete recipient reducer method
   // Render only selected recipient
 
   useEffect(() => {
@@ -36,7 +35,7 @@ const CSAutocomplete: FC = (): ReactElement => {
       })),
     }));
     setOptions(groupedOptions);
-  }, [data.availableRecipients]);
+  }, [data]);
 
   useEffect(() => {
     if (options.length) {
