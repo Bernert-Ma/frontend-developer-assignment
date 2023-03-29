@@ -1,5 +1,5 @@
 import { IOption } from "../../models/autocomplete.model";
-import { IAvailableRecipient } from "../../models/recipients.model";
+import { IAvailableRecipient, IDomainData } from "../../models/recipients.model";
 
 export const onCreateNewOption = (label: string): IOption => ({
   label,
@@ -26,5 +26,19 @@ export const onCreateOption = (inputValue: string, newOption: IOption, data: IAv
       }],
     });
   }
+  return data;
+};
+
+export const onSelecteNewValue = (option: IOption, data: IAvailableRecipient[]): IAvailableRecipient[] => {
+  const recipientObj: IAvailableRecipient = data.find((recipient) =>
+    recipient.data.some((item) => item.id.toString() === option.value)
+  );
+  const selectedItemObj: IDomainData = recipientObj.data.find(
+    (item) => item.id.toString() === option.value
+  );
+  const domainIndex = data.indexOf(recipientObj);
+  const emailIndex = recipientObj.data.indexOf(selectedItemObj);
+  const selectedEmail = data[domainIndex].data[emailIndex];
+  selectedEmail.isSelected = !selectedEmail.isSelected;
   return data;
 };

@@ -4,7 +4,7 @@ import { CreatableSelect } from 'chakra-react-select';
 import { useLayoutContext } from '../hooks/useLayoutContext';
 import { DispatchTypeEnum } from '../../types/dispatch.type';
 import { AlertTypeEnum } from '../../types/alert.type';
-import { onCreateNewOption, onCreateOption } from './helpers';
+import { onCreateNewOption, onCreateOption, onSelecteNewValue } from './helpers';
 import { IGroupedOption, IOption } from '../../models/autocomplete.model';
 import { IAvailableRecipient } from '../../models/recipients.model';
 
@@ -14,9 +14,6 @@ const CSAutocomplete: FC = (): ReactElement => {
   const [options, setOptions] = useState<IGroupedOption[]>([]);
   const [value, setValue] = useState<IOption | null>();
   const [isInvalid, setIsInvalid] = useState<boolean>(false);
-
-  // TODO:
-  // Render only selected recipient
 
   useEffect(() => {
     setIsLoading(true);
@@ -58,6 +55,15 @@ const CSAutocomplete: FC = (): ReactElement => {
   };
 
   const handleChange = (newValue: IOption | null) => {
+    if (newValue) {
+      const updatedRecipients: IAvailableRecipient[] = onSelecteNewValue(newValue, data.availableRecipients);
+      onDispatch({
+        type: DispatchTypeEnum.CHANGE_EMAIL_SELECTION,
+        payload: {
+          data: updatedRecipients,
+        },
+      });
+    }
     setIsInvalid(false);
     setValue(newValue);
   };
