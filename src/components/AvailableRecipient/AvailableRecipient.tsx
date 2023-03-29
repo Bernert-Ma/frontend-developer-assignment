@@ -54,7 +54,7 @@ const AvailableRecipient: FC = (): ReactElement => {
         Available Recipients
       </h1>
       <CSAutocomplete />
-      <Box boxShadow='xs' p='6' rounded='md' minW={400} maxH={469} overflow='auto'>
+      <Box boxShadow='xs' p='6' rounded='md' minW={400} maxH={data.isInvalidEmail ? 444.5 : 469} overflow='auto'>
         {data.availableRecipients.map((recipient) => {
           if (recipient.data.length === 1) {
             const { email, isSelected, id } = recipient.data[0];
