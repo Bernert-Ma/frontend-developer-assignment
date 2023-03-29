@@ -5,6 +5,8 @@ import { initialState } from '../../reducer/recipients.reducer';
 export const defaultCtx: ILayoutContextProps = {
   data: initialState,
   onDispatch: () => {},
+  onEnableToast: () => {},
+  onEnableAlertDialog: () => {},
 };
 
 export const LayoutContext = React.createContext<ILayoutContextProps>(defaultCtx);

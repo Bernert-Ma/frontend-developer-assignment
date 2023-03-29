@@ -11,20 +11,21 @@ function reducer(state: IInitialState, action: IAction) {
 		case DispatchTypeEnum.SET_AVAILABLE_RECIPIENTS: {
 			return {
 				...state,
-				availableRecipients: action.payload.data as IAvailableRecipient[],
+				availableRecipients: action.payload.data.sort((a, b) => b.data.length - a.data.length) as IAvailableRecipient[],
 			};
 		}
 
 		case DispatchTypeEnum.CHANGE_EMAIL_SELECTION: {
 			return {
 				...state,
-				availableRecipients: action.payload.data as IAvailableRecipient[],
+				availableRecipients: action.payload.data.sort((a, b) => b.data.length - a.data.length) as IAvailableRecipient[],
 			};
 		}
 
 		case DispatchTypeEnum.ADD_RECIPIENT: {
 			return {
 				...state,
+				availableRecipients: action.payload.data.sort((a, b) => b.data.length - a.data.length) as IAvailableRecipient[],
 			};
 		}
 
