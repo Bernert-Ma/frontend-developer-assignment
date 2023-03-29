@@ -4,9 +4,9 @@ import { CreatableSelect } from 'chakra-react-select';
 import { useLayoutContext } from '../hooks/useLayoutContext';
 import { DispatchTypeEnum } from '../../types/dispatch.type';
 import { AlertTypeEnum } from '../../types/alert.type';
-import { onCreateNewOption, onCreateOption, onSelecteNewValue } from './helpers';
 import { IGroupedOption, IOption } from '../../models/autocomplete.model';
 import { IAvailableRecipient } from '../../models/recipients.model';
+import { onCreateNewOption, onCreateOption, onSelecteNewValue } from './helpers';
 
 const CSAutocomplete: FC = (): ReactElement => {
   const { data, onDispatch, onEnableToast } = useLayoutContext();

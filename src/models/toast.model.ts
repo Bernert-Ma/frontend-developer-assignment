@@ -1,4 +1,4 @@
-import { AlertTypeEnum } from "../types/alert.type";
+import { AlertTypeEnum } from '../types/alert.type';
 
 export interface IToastProps {
   message: string;
