@@ -80,8 +80,17 @@ const Layout: FC = (): ReactElement => {
           alignItems="center"
           justifyContent="space-around"
           sx={{
-            '@media screen and (max-width: 580px)': {
-              display: 'grid'
+            '@media screen and (max-width: 532px)': {
+              height: '100%',
+              display: 'flow-root',
+              textAlign: 'center',
+              margin: '16px',
+            },
+            '@media screen and (max-width: 964px)': {
+              textAlign: 'initial',
+              height: '100%',
+              display: 'flow-root',
+              margin: '16px',
             }
           }}
         >
