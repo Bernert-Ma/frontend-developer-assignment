@@ -29,11 +29,33 @@ const SelectedRecipient: FC = (): ReactElement => {
   }, [data]);
 
   return (
-    <Box boxShadow='lg' p='6' rounded='md' bg='white' h='68vh'>
+    <Box
+      boxShadow='lg'
+      p='6'
+      rounded='md'
+      bg='white'
+      h='68vh'
+    >
       <h1 style={{ paddingBottom: 16 }}>
         Selected Recipients
       </h1>
-      <Box boxShadow='xs' p='6' rounded='md' minWidth={400} maxH={590} overflow='auto'>
+      <Box
+        boxShadow='xs'
+        p='6'
+        rounded='md'
+        minWidth={400}
+        maxH={'92%'}
+        overflow='auto'
+        sx={{
+          '@media screen and (max-width: 380px)': {
+            display: 'grid',
+          },
+          '@media screen and (max-width: 964px)': {
+            minW: '100%',
+            maxH: '92%',
+          }
+        }}
+      >
         <Accordion allowMultiple>
           <AccordionItem border='none'>
             <h2>

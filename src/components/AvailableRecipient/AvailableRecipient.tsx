@@ -49,12 +49,40 @@ const AvailableRecipient: FC = (): ReactElement => {
   };
 
   return (
-    <Box boxShadow='lg' p='6' rounded='md' bg='white' h='68vh'>
+    <Box
+      boxShadow='lg'
+      p='6'
+      rounded='md'
+      bg='white'
+      h='68vh'
+      sx={{
+        '@media screen and (max-width: 964px)': {
+          display: 'grid',
+          marginBottom: '24px'
+        }
+      }}
+    >
       <h1>
         Available Recipients
       </h1>
       <CSAutocomplete />
-      <Box boxShadow='xs' p='6' rounded='md' minW={400} maxH={data.isInvalidEmail ? 444.5 : 469} overflow='auto'>
+      <Box
+        boxShadow='xs'
+        p='6'
+        rounded='md'
+        minW={400}
+        maxH={data.isInvalidEmail ? '70%' : '73%'}
+        overflow='auto'
+        sx={{
+          '@media screen and (max-width: 380px)': {
+            display: 'grid',
+          },
+          '@media screen and (max-width: 964px)': {
+            minW: '100%',
+            maxH: '100%',
+          }
+        }}
+      >
         {data.availableRecipients.map((recipient) => {
           if (recipient.data.length === 1) {
             const { email, isSelected, id } = recipient.data[0];
