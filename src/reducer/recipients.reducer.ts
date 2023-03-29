@@ -4,6 +4,7 @@ import { DispatchTypeEnum } from '../types/dispatch.type';
 
 export const initialState: IInitialState = {
   availableRecipients: [],
+	isInvalidEmail: false,
 };
 
 function reducer(state: IInitialState, action: IAction) {
@@ -33,7 +34,14 @@ function reducer(state: IInitialState, action: IAction) {
 			return {
 				...state,
 				availableRecipients: action.payload.data.sort((a, b) => b.data.length - a.data.length) as IAvailableRecipient[],
-			}
+			};
+		}
+
+		case DispatchTypeEnum.SET_INVALID_EMAIL: {
+			return {
+				...state,
+				isInvalidEmail: action.payload.data as boolean,
+			};
 		}
 
 		default:

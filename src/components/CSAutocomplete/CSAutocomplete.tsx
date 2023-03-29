@@ -39,6 +39,12 @@ const CSAutocomplete: FC = (): ReactElement => {
     setValue(newOption);
     if (!emailRegex.test(inputValue)) {
       setIsInvalid(true);
+      onDispatch({
+        type: DispatchTypeEnum.SET_INVALID_EMAIL,
+        payload: {
+          data: true,
+        },
+      });
       return;
     };
     const updatedRecipients: IAvailableRecipient[] = onCreateOption(inputValue, newOption, data.availableRecipients);
@@ -65,6 +71,12 @@ const CSAutocomplete: FC = (): ReactElement => {
       });
     }
     setIsInvalid(false);
+    onDispatch({
+      type: DispatchTypeEnum.SET_INVALID_EMAIL,
+      payload: {
+        data: false,
+      },
+    });
     setValue(newValue);
   };
 

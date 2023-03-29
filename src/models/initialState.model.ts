@@ -12,4 +12,5 @@ export interface IAction extends IActionType {
 
 export interface IInitialState {
   availableRecipients: IAvailableRecipient[];
+  isInvalidEmail: boolean;
 }
