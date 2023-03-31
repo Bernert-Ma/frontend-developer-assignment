@@ -12,7 +12,7 @@ In order to run this app properly in your local environment, please consider the
 
 3. Finally run `yarn start` to compile the application
 
-   This opens a new browser tab on port 3000
+   This opens a new browser tab on `port 3000`
 
 Happy Testing! 🚀
 
