@@ -1,5 +1,5 @@
-import { IOption } from "../../models/autocomplete.model";
-import { IAvailableRecipient, IDomainData } from "../../models/recipients.model";
+import { IOption } from "../../../models/autocomplete.model";
+import { IAvailableRecipient, IDomainData } from "../../../models/recipients.model";
 
 export const onCreateNewOption = (label: string): IOption => ({
   label,

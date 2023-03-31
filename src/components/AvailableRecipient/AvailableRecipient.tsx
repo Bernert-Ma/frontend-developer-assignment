@@ -1,4 +1,4 @@
-import { FC, ReactElement } from 'react';
+import { FC, ReactElement, useEffect, useState } from 'react';
 import {
   Accordion,
   AccordionItem,
@@ -13,13 +13,28 @@ import {
 import { DeleteIcon } from '@chakra-ui/icons';
 import { useLayoutContext } from '../hooks/useLayoutContext';
 import { IAvailableRecipient, IDomainData } from '../../models/recipients.model';
+import { IGroupedOption } from '../../models/autocomplete.model';
 import { DispatchTypeEnum } from '../../types/dispatch.type';
-import CSAutocomplete from '../CSAutocomplete';
 import { AlertTypeEnum } from '../../types/alert.type';
-import { onRemoveDomain, onRemoveEmail } from './helpers';
+import CSAutocomplete from '../sharedComponents/CSAutocomplete';
+import { getGroupedOptions, onRemoveDomain, onRemoveEmail } from './helpers';
+import {
+  availableRecipientRoot,
+  availableRecipientWrapper,
+  singleRecipientContainer,
+  accordionHeader,
+  accordionButtonHover,
+  accordionPanelBodyStyle,
+} from './AvailableRecipient.styled';
 
 const AvailableRecipient: FC = (): ReactElement => {
   const { data, onDispatch, onEnableAlertDialog, onEnableToast } = useLayoutContext();
+  const [groupedOptions, setGroupedOptions] = useState<IGroupedOption[]>([]);
+
+  useEffect(() => {
+    const options = getGroupedOptions(data.availableRecipients);
+    setGroupedOptions(options);
+  }, [data]);
 
   const handleChange = (checked: boolean, selectedItem: IDomainData) => {
     const recipientObj: IAvailableRecipient = data.availableRecipients.find(recipient => recipient.data.some(item => item.id === selectedItem.id));
@@ -55,17 +70,12 @@ const AvailableRecipient: FC = (): ReactElement => {
       rounded='md'
       bg='white'
       h='68vh'
-      sx={{
-        '@media screen and (max-width: 964px)': {
-          display: 'grid',
-          marginBottom: '24px'
-        }
-      }}
+      sx={availableRecipientRoot}
     >
       <h1>
         Available Recipients
       </h1>
-      <CSAutocomplete />
+      <CSAutocomplete groupedOptions={groupedOptions} />
       <Box
         boxShadow='xs'
         p='6'
@@ -73,15 +83,7 @@ const AvailableRecipient: FC = (): ReactElement => {
         minW={400}
         maxH={data.isInvalidEmail ? '70%' : '73%'}
         overflow='auto'
-        sx={{
-          '@media screen and (max-width: 380px)': {
-            display: 'grid',
-          },
-          '@media screen and (max-width: 964px)': {
-            minW: '100%',
-            maxH: '100%',
-          }
-        }}
+        sx={availableRecipientWrapper}
       >
         {data.availableRecipients.map((recipient) => {
           if (recipient.data.length === 1) {
@@ -89,11 +91,7 @@ const AvailableRecipient: FC = (): ReactElement => {
             return (
               <div
                 key={id}
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  padding: '8px 0px 8px 19px'
-                }}
+                style={singleRecipientContainer}
               >
                 <Checkbox
                   isChecked={isSelected}
@@ -131,13 +129,13 @@ const AvailableRecipient: FC = (): ReactElement => {
           return (
             <Accordion key={recipient.id} defaultIndex={[0]} allowToggle>
               <AccordionItem key={recipient.id} border='none'>
-                <h2 style={{ display: 'flex', alignItems: 'center', paddingLeft: '19px' }}>
+                <h2 style={accordionHeader}>
                   <Checkbox
                     isChecked={recipient.data.every((item) => item.isSelected)}
                     isIndeterminate={recipient.data.some((item) => item.isSelected) && !recipient.data.every((item) => item.isSelected)}
                     onChange={(e) => recipient.data.forEach((item) => handleChange(e.target.checked, item))}
                   />
-                  <AccordionButton _hover={{ bgColor: 'none' }}>
+                  <AccordionButton _hover={accordionButtonHover}>
                     <AccordionIcon />
                     <Box as="span" flex='1' textAlign='left'>
                       {recipient.domain}
@@ -170,13 +168,7 @@ const AvailableRecipient: FC = (): ReactElement => {
                 <AccordionPanel pb={4} pr={0}>
                   {recipient.data.map((item) => (
                     <Stack key={item.id} pl={6} mt={1} spacing={1}>
-                      <div
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          alignItems: 'center',
-                        }}
-                      >
+                      <div style={accordionPanelBodyStyle}>
                         <Checkbox
                           isChecked={item.isSelected}
                           onChange={(e) => handleChange(e.target.checked, item)}
