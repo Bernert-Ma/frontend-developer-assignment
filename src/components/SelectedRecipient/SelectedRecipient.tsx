@@ -9,6 +9,12 @@ import {
 } from '@chakra-ui/react';
 import { useLayoutContext } from '../hooks/useLayoutContext';
 import { IAvailableRecipient, ISelectedEmail } from '../../models/recipients.model';
+import {
+  headerStyle,
+  selectedRecipientWrapper,
+  accordionButtonHover,
+  accordionPanelBodyStyle,
+} from './SelectedRecipient.styled'
 
 const SelectedRecipient: FC = (): ReactElement => {
   const { data } = useLayoutContext();
@@ -36,7 +42,7 @@ const SelectedRecipient: FC = (): ReactElement => {
       bg='white'
       h='68vh'
     >
-      <h1 style={{ paddingBottom: 16 }}>
+      <h1 style={headerStyle}>
         Selected Recipients
       </h1>
       <Box
@@ -46,20 +52,12 @@ const SelectedRecipient: FC = (): ReactElement => {
         minWidth={400}
         maxH={'92%'}
         overflow='auto'
-        sx={{
-          '@media screen and (max-width: 380px)': {
-            display: 'grid',
-          },
-          '@media screen and (max-width: 964px)': {
-            minW: '100%',
-            maxH: '92%',
-          }
-        }}
+        sx={selectedRecipientWrapper}
       >
         <Accordion allowMultiple>
           <AccordionItem border='none'>
             <h2>
-              <AccordionButton _hover={{ bgColor: 'none' }}>
+              <AccordionButton _hover={accordionButtonHover}>
                 <AccordionIcon />
                 <Box as="span" flex='1' textAlign='left'>
                   Company Recipiens
@@ -75,7 +73,7 @@ const SelectedRecipient: FC = (): ReactElement => {
                   <Accordion key={company.id} allowToggle>
                     <AccordionItem border='none'>
                       <h2>
-                        <AccordionButton _hover={{ bgColor: 'none' }}>
+                        <AccordionButton _hover={accordionButtonHover}>
                           <AccordionIcon />
                           <Box as="span" flex='1' textAlign='left'>
                             {company.domain}
@@ -84,7 +82,7 @@ const SelectedRecipient: FC = (): ReactElement => {
                       </h2>
                       <AccordionPanel pb={4}>
                         {company.data.map((item) => (
-                          <div key={item.id} style={{ paddingLeft: '42px' }}>
+                          <div key={item.id} style={accordionPanelBodyStyle}>
                             {item.email}
                           </div>
                         ))}
@@ -95,10 +93,9 @@ const SelectedRecipient: FC = (): ReactElement => {
               })}
             </AccordionPanel>
           </AccordionItem>
-
           <AccordionItem border='none'>
             <h2>
-              <AccordionButton _hover={{ bgColor: 'none' }}>
+              <AccordionButton _hover={accordionButtonHover}>
                 <AccordionIcon />
                 <Box as="span" flex='1' textAlign='left'>
                   Email Recipiens
@@ -107,7 +104,7 @@ const SelectedRecipient: FC = (): ReactElement => {
             </h2>
             <AccordionPanel pb={4}>
               {selectedEmails.map((item) => (
-                <div key={item.id} style={{ paddingLeft: '42px' }}>
+                <div key={item.id} style={accordionPanelBodyStyle}>
                   {item.email}
                 </div>
               ))}

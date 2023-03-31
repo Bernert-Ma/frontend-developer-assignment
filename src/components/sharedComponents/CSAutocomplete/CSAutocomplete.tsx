@@ -1,14 +1,14 @@
-import { FC, ReactElement, useEffect, useState } from 'react';
+import { FC, ReactElement, useEffect, useState, FocusEvent } from 'react';
 import { Box, FormControl, FormErrorMessage, theme } from '@chakra-ui/react';
 import { CreatableSelect } from 'chakra-react-select';
-import { useLayoutContext } from '../hooks/useLayoutContext';
-import { DispatchTypeEnum } from '../../types/dispatch.type';
-import { AlertTypeEnum } from '../../types/alert.type';
-import { IGroupedOption, IOption } from '../../models/autocomplete.model';
-import { IAvailableRecipient } from '../../models/recipients.model';
+import { useLayoutContext } from '../../hooks/useLayoutContext';
+import { DispatchTypeEnum } from '../../../types/dispatch.type';
+import { AlertTypeEnum } from '../../../types/alert.type';
+import { ICSAutocompleteProps, IGroupedOption, IOption } from '../../../models/autocomplete.model';
+import { IAvailableRecipient } from '../../../models/recipients.model';
 import { onCreateNewOption, onCreateOption, onSelecteNewValue } from './helpers';
 
-const CSAutocomplete: FC = (): ReactElement => {
+const CSAutocomplete: FC<ICSAutocompleteProps> = ({ groupedOptions }): ReactElement => {
   const { data, onDispatch, onEnableToast } = useLayoutContext();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [options, setOptions] = useState<IGroupedOption[]>([]);
@@ -17,21 +17,21 @@ const CSAutocomplete: FC = (): ReactElement => {
 
   useEffect(() => {
     setIsLoading(true);
-    const groupedOptions = data.availableRecipients.map((item) => ({
-      label: item.domain,
-      options: item.data.map((dataItem) => ({
-        value: dataItem.id.toString(),
-        label: dataItem.email,
-      })),
-    }));
     setOptions(groupedOptions);
-  }, [data]);
+  }, [groupedOptions]);
 
   useEffect(() => {
     if (options.length) {
       setIsLoading(false);
     }
   }, [options]);
+
+  const handleFocus = () => {
+    if (value) {
+      setValue(null);
+      setIsInvalid(false);
+    }
+  };
 
   const handleCreate = (inputValue: string) => {
     const newOption: IOption = onCreateNewOption(inputValue);
@@ -71,13 +71,13 @@ const CSAutocomplete: FC = (): ReactElement => {
       });
     }
     setIsInvalid(false);
+    setValue(newValue);
     onDispatch({
       type: DispatchTypeEnum.SET_INVALID_EMAIL,
       payload: {
         data: false,
       },
     });
-    setValue(newValue);
   };
 
   return (
@@ -85,6 +85,7 @@ const CSAutocomplete: FC = (): ReactElement => {
       <FormControl p={4} isInvalid>
         <CreatableSelect
           focusBorderColor={isInvalid ? theme.colors.red[500] : theme.colors.blue[500]}
+          onFocus={() => handleFocus()}
           isInvalid={isInvalid}
           isClearable
           isDisabled={isLoading}

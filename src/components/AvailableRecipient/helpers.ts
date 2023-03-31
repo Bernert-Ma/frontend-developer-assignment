@@ -1,3 +1,4 @@
+import { IGroupedOption } from '../../models/autocomplete.model';
 import { IAvailableRecipient, IDomainData } from '../../models/recipients.model';
 
 export const onRemoveEmail = (data: IAvailableRecipient[], emailId: number): IAvailableRecipient[] => {
@@ -17,4 +18,14 @@ export const onRemoveDomain = (data: IAvailableRecipient[], domainId: number): I
   const domainIndex = data.indexOf(recipientObj);
   data.splice(domainIndex, 1);
   return data;
+};
+
+export const getGroupedOptions = (data: IAvailableRecipient[]): IGroupedOption[] => {
+  return data.map((item) => ({
+    label: item.domain,
+    options: item.data.map((dataItem) => ({
+      value: dataItem.id.toString(),
+      label: dataItem.email,
+    })),
+  }));
 };

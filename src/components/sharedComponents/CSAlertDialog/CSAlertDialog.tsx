@@ -8,7 +8,7 @@ import {
   AlertDialogOverlay,
   Button,
  } from '@chakra-ui/react';
-import { IAlertDialogProps } from '../../models/alertDialog.model';
+import { IAlertDialogProps } from '../../../models/alertDialog.model';
 
 const CSAlertDialog: FC<IAlertDialogProps> = ({ open, content, onClose }): ReactElement => {
   const [openAlertDialog, setOpenAlertDialog] = useState<boolean>(open);

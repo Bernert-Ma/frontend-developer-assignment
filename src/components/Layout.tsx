@@ -19,7 +19,7 @@ import { LayoutContext } from './hooks/useLayoutContext';
 import { ILayoutContextProps } from '../models/layoutContext.model';
 import AvailableRecipient from './AvailableRecipient';
 import SelectedRecipient from './SelectedRecipient';
-import CSAlertDialog from './CSAlertDialog';
+import CSAlertDialog from './sharedComponents/CSAlertDialog';
 import { IAlertDialogContent } from '../models/alertDialog.model';
 import { IToastProps } from '../models/toast.model';
 

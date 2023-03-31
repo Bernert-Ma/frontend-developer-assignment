@@ -1,3 +1,7 @@
+export interface ICSAutocompleteProps {
+  groupedOptions: IGroupedOption[];
+}
+
 export interface IOption {
   value: string;
   label: string;
