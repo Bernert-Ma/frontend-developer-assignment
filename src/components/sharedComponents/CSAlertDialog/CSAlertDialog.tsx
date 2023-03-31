@@ -1,4 +1,4 @@
-import { FC, ReactElement, useEffect, useState, useRef } from 'react';
+import { FC, ReactElement, useEffect, useState, useRef } from "react";
 import {
   AlertDialog,
   AlertDialogBody,
@@ -7,10 +7,14 @@ import {
   AlertDialogContent,
   AlertDialogOverlay,
   Button,
- } from '@chakra-ui/react';
-import { IAlertDialogProps } from '../../../models/alertDialog.model';
+} from "@chakra-ui/react";
+import { IAlertDialogProps } from "../../../models/alertDialog.model";
 
-const CSAlertDialog: FC<IAlertDialogProps> = ({ open, content, onClose }): ReactElement => {
+const CSAlertDialog: FC<IAlertDialogProps> = ({
+  open,
+  content,
+  onClose,
+}): ReactElement => {
   const [openAlertDialog, setOpenAlertDialog] = useState<boolean>(open);
   const cancelRef = useRef(null);
 
@@ -30,7 +34,7 @@ const CSAlertDialog: FC<IAlertDialogProps> = ({ open, content, onClose }): React
 
   return (
     <AlertDialog
-      motionPreset='slideInBottom'
+      motionPreset="slideInBottom"
       isOpen={openAlertDialog}
       leastDestructiveRef={cancelRef}
       onClose={() => setOpenAlertDialog(false)}
@@ -38,17 +42,19 @@ const CSAlertDialog: FC<IAlertDialogProps> = ({ open, content, onClose }): React
     >
       <AlertDialogOverlay>
         <AlertDialogContent>
-          <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+          <AlertDialogHeader fontSize="lg" fontWeight="bold">
             {content?.headerText}
           </AlertDialogHeader>
-          <AlertDialogBody>
-            {content?.bodyText}
-          </AlertDialogBody>
+          <AlertDialogBody>{content?.bodyText}</AlertDialogBody>
           <AlertDialogFooter>
             <Button ref={cancelRef} onClick={() => handleConfirmChange(false)}>
               {content?.dismissButtonText}
             </Button>
-            <Button colorScheme='red' onClick={() => handleConfirmChange(true)} ml={3}>
+            <Button
+              colorScheme="red"
+              onClick={() => handleConfirmChange(true)}
+              ml={3}
+            >
               {content?.confirmButtonText}
             </Button>
           </AlertDialogFooter>

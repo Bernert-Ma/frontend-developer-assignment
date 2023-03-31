@@ -1,9 +1,11 @@
-import { IDomainData, IAvailableRecipient } from '../models/recipients.model';
+import { IDomainData, IAvailableRecipient } from "../models/recipients.model";
 
-export const getAvailableRecipient = (users: IDomainData[]): IAvailableRecipient[] => {
+export const getAvailableRecipient = (
+  users: IDomainData[]
+): IAvailableRecipient[] => {
   let counter = 1;
   const groupedUsers = users.reduce((acc, user) => {
-    const domain = user.email.split('@')[1];
+    const domain = user.email.split("@")[1];
     if (!acc[domain]) {
       acc[domain] = [];
     }
@@ -14,9 +16,9 @@ export const getAvailableRecipient = (users: IDomainData[]): IAvailableRecipient
     return acc;
   }, {});
 
-  return Object.keys(groupedUsers).map(domain => ({
+  return Object.keys(groupedUsers).map((domain) => ({
     id: counter++,
     domain,
-    data: groupedUsers[domain]
+    data: groupedUsers[domain],
   }));
 };
