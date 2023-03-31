@@ -101,7 +101,7 @@ const AvailableRecipient: FC = (): ReactElement => {
         p="6"
         rounded="md"
         minW={400}
-        maxH={data.isInvalidEmail ? "70%" : "73%"}
+        maxH={data.isInvalidEmail ? "69%" : "73%"}
         overflow="auto"
         sx={availableRecipientWrapper}
       >
