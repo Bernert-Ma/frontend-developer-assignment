@@ -4,9 +4,9 @@
 
 In order to run this app properly in your local environment, please consider the following steps in your preferred shell.
 
-1. Make sure you have installed the node version `>= 18.14.0`
+1. Make sure you have installed the `node` version `>= 18.14.0`
 
-   You can do so by either running the command `nvm use` or using your preferred node version installer
+   You can do so by either running the command `nvm use` or using your preferred node package installer
 
 2. Run `yarn` or `yarn install` in order to install all the required package
 
