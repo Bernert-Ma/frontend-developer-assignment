@@ -1,14 +1,24 @@
-import { FC, ReactElement, useEffect, useState, FocusEvent } from 'react';
-import { Box, FormControl, FormErrorMessage, theme } from '@chakra-ui/react';
-import { CreatableSelect } from 'chakra-react-select';
-import { useLayoutContext } from '../../hooks/useLayoutContext';
-import { DispatchTypeEnum } from '../../../types/dispatch.type';
-import { AlertTypeEnum } from '../../../types/alert.type';
-import { ICSAutocompleteProps, IGroupedOption, IOption } from '../../../models/autocomplete.model';
-import { IAvailableRecipient } from '../../../models/recipients.model';
-import { onCreateNewOption, onCreateOption, onSelecteNewValue } from './helpers';
+import { FC, ReactElement, useEffect, useState } from "react";
+import { Box, FormControl, FormErrorMessage, theme } from "@chakra-ui/react";
+import { CreatableSelect } from "chakra-react-select";
+import { useLayoutContext } from "../../hooks/useLayoutContext";
+import { DispatchTypeEnum } from "../../../types/dispatch.type";
+import { AlertTypeEnum } from "../../../types/alert.type";
+import {
+  ICSAutocompleteProps,
+  IGroupedOption,
+  IOption,
+} from "../../../models/autocomplete.model";
+import { IAvailableRecipient } from "../../../models/recipients.model";
+import {
+  onCreateNewOption,
+  onCreateOption,
+  onSelecteNewValue,
+} from "./helpers";
 
-const CSAutocomplete: FC<ICSAutocompleteProps> = ({ groupedOptions }): ReactElement => {
+const CSAutocomplete: FC<ICSAutocompleteProps> = ({
+  groupedOptions,
+}): ReactElement => {
   const { data, onDispatch, onEnableToast } = useLayoutContext();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [options, setOptions] = useState<IGroupedOption[]>([]);
@@ -46,8 +56,12 @@ const CSAutocomplete: FC<ICSAutocompleteProps> = ({ groupedOptions }): ReactElem
         },
       });
       return;
-    };
-    const updatedRecipients: IAvailableRecipient[] = onCreateOption(inputValue, newOption, data.availableRecipients);
+    }
+    const updatedRecipients: IAvailableRecipient[] = onCreateOption(
+      inputValue,
+      newOption,
+      data.availableRecipients
+    );
     onDispatch({
       type: DispatchTypeEnum.ADD_RECIPIENT,
       payload: {
@@ -55,14 +69,17 @@ const CSAutocomplete: FC<ICSAutocompleteProps> = ({ groupedOptions }): ReactElem
       },
     });
     onEnableToast({
-      message: 'Email has been successfully created',
-      alterStatus: AlertTypeEnum.SUCCESS
+      message: "Email has been successfully created",
+      alterStatus: AlertTypeEnum.SUCCESS,
     });
   };
 
   const handleChange = (newValue: IOption | null) => {
     if (newValue) {
-      const updatedRecipients: IAvailableRecipient[] = onSelecteNewValue(newValue, data.availableRecipients);
+      const updatedRecipients: IAvailableRecipient[] = onSelecteNewValue(
+        newValue,
+        data.availableRecipients
+      );
       onDispatch({
         type: DispatchTypeEnum.CHANGE_EMAIL_SELECTION,
         payload: {
@@ -84,7 +101,9 @@ const CSAutocomplete: FC<ICSAutocompleteProps> = ({ groupedOptions }): ReactElem
     <Box maxW="md" mt={8} mb={8}>
       <FormControl p={4} isInvalid>
         <CreatableSelect
-          focusBorderColor={isInvalid ? theme.colors.red[500] : theme.colors.blue[500]}
+          focusBorderColor={
+            isInvalid ? theme.colors.red[500] : theme.colors.blue[500]
+          }
           onFocus={() => handleFocus()}
           isInvalid={isInvalid}
           isClearable
@@ -96,13 +115,11 @@ const CSAutocomplete: FC<ICSAutocompleteProps> = ({ groupedOptions }): ReactElem
           value={value}
         />
         {isInvalid && (
-          <FormErrorMessage>
-            Invalid email address
-          </FormErrorMessage>
+          <FormErrorMessage>Invalid email address</FormErrorMessage>
         )}
       </FormControl>
     </Box>
-  )
+  );
 };
 
 export default CSAutocomplete;

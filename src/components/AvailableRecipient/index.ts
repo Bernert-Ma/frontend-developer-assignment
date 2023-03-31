@@ -1,3 +1,3 @@
-import AvailableRecipient from './AvailableRecipient';
+import AvailableRecipient from "./AvailableRecipient";
 
 export default AvailableRecipient;

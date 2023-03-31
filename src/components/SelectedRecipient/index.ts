@@ -1,3 +1,3 @@
-import SelectedRecipient from './SelectedRecipient';
+import SelectedRecipient from "./SelectedRecipient";
 
 export default SelectedRecipient;

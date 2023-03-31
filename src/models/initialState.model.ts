@@ -1,4 +1,4 @@
-import { IAvailableRecipient } from './recipients.model';
+import { IAvailableRecipient } from "./recipients.model";
 
 export interface IActionType {
   type: string;
@@ -7,7 +7,7 @@ export interface IActionType {
 export interface IAction extends IActionType {
   payload: {
     [key: string]: any;
-  }
+  };
 }
 
 export interface IInitialState {
