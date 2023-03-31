@@ -7,7 +7,10 @@ import {
 export const onRemoveEmail = (
   data: IAvailableRecipient[],
   emailId: number
-): IAvailableRecipient[] => {
+): IAvailableRecipient[] | null => {
+  if (!emailId) {
+    return null;
+  }
   const recipientObj: IAvailableRecipient = data.find((recipient) =>
     recipient.data.some((item) => item.id === emailId)
   );
@@ -26,7 +29,10 @@ export const onRemoveEmail = (
 export const onRemoveDomain = (
   data: IAvailableRecipient[],
   domainId: number
-): IAvailableRecipient[] => {
+): IAvailableRecipient[] | null => {
+  if (!domainId) {
+    return null;
+  }
   const recipientObj: IAvailableRecipient = data.find(
     (recipient) => recipient.id === domainId
   );
