@@ -63,11 +63,25 @@ const AvailableRecipient: FC = (): ReactElement => {
       ? (updatedRecipients = onRemoveEmail(data.availableRecipients, id))
       : (updatedRecipients = onRemoveDomain(data.availableRecipients, id));
 
+    if (updatedRecipients === null) {
+      onEnableToast({
+        message: `Upps! Something went wrong with deleting the ${
+          isSingleItem ? "email" : "domain"
+        }. Please try again later.`,
+        alterStatus: AlertTypeEnum.INFO,
+      });
+      return;
+    }
+
     onDispatch({
       type: DispatchTypeEnum.REMOVE_RECIPIENT,
       payload: {
         data: updatedRecipients,
       },
+    });
+    onEnableToast({
+      message: `${isSingleItem ? "Email" : "Domain"} has been deleted`,
+      alterStatus: AlertTypeEnum.ERROR,
     });
   };
 
@@ -120,10 +134,6 @@ const AvailableRecipient: FC = (): ReactElement => {
                       dialogResponse: (val: boolean) => {
                         if (val) {
                           handleDeleteRecipient(id, true);
-                          onEnableToast({
-                            message: "Email has been deleted",
-                            alterStatus: AlertTypeEnum.ERROR,
-                          });
                         }
                       },
                     })
@@ -171,10 +181,6 @@ const AvailableRecipient: FC = (): ReactElement => {
                         dialogResponse: (val: boolean) => {
                           if (val) {
                             handleDeleteRecipient(recipient.id, false);
-                            onEnableToast({
-                              message: "Doamin has been deleted",
-                              alterStatus: AlertTypeEnum.ERROR,
-                            });
                           }
                         },
                       })
@@ -207,10 +213,6 @@ const AvailableRecipient: FC = (): ReactElement => {
                               dialogResponse: (val: boolean) => {
                                 if (val) {
                                   handleDeleteRecipient(item.id, true);
-                                  onEnableToast({
-                                    message: "Email has been deleted",
-                                    alterStatus: AlertTypeEnum.ERROR,
-                                  });
                                 }
                               },
                             })
