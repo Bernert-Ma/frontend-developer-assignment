@@ -4,11 +4,23 @@ import {
   IDomainData,
 } from "../../../models/recipients.model";
 
+/**
+ * Creates a new option with a given label and a unique value based on the current timestamp
+ * @param label The label of the new option
+ * @returns An object representing the new option
+ */
 export const onCreateNewOption = (label: string): IOption => ({
   label,
   value: new Date().getTime().toString(),
 });
 
+/**
+ * Adds a new option to the list of available recipients based on the user input
+ * @param inputValue The user input
+ * @param newOption The new option to add to the list of available recipients
+ * @param data An array of available recipient
+ * @returns An updated array of available recipient including the new option
+ */
 export const onCreateOption = (
   inputValue: string,
   newOption: IOption,
@@ -38,6 +50,13 @@ export const onCreateOption = (
   return data;
 };
 
+/**
+ * Handles the selection of the autocomplete value.
+ * Updates the isSelected property of the selected email.
+ * @param option The selected option
+ * @param data An array of available recipients
+ * @returns An updated array of available recipient
+ */
 export const onSelecteNewValue = (
   option: IOption,
   data: IAvailableRecipient[]
