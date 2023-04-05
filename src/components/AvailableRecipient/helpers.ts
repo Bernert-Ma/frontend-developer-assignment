@@ -4,6 +4,12 @@ import {
   IDomainData,
 } from "../../models/recipients.model";
 
+/**
+ * Removes an email from the array of available recipients and returns the updated array
+ * @param data An array of available recipient
+ * @param emailId The id of the email to be removed
+ * @returns The updated array of available recipient, or null if emailId is falsy
+ */
 export const onRemoveEmail = (
   data: IAvailableRecipient[],
   emailId: number
@@ -26,6 +32,12 @@ export const onRemoveEmail = (
   return data;
 };
 
+/**
+ * Removes a domain from the array of available recipients and returns the updated array
+ * @param data An array of available recipient
+ * @param domainId The id of the domain to be removed
+ * @returns The updated array of available recipient, or null if domainId is falsy
+ */
 export const onRemoveDomain = (
   data: IAvailableRecipient[],
   domainId: number
@@ -41,6 +53,11 @@ export const onRemoveDomain = (
   return data;
 };
 
+/**
+ * Groups an array of available recipient by domain and formats them as options for the autocomplete component
+ * @param data An array of available recipient
+ * @returns An array of objects containing the available recipient options, grouped by domain
+ */
 export const getGroupedOptions = (
   data: IAvailableRecipient[]
 ): IGroupedOption[] => {
